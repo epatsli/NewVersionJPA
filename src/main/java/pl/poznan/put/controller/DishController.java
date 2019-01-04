@@ -1,9 +1,15 @@
 package pl.poznan.put.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import com.sun.net.httpserver.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,13 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import pl.poznan.put.model.Dish;
 import pl.poznan.put.dao.DishRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import pl.poznan.put.model.Dish;
 
 @RestController
 @RequestMapping("/api")
@@ -46,22 +47,37 @@ public class DishController {
 		return _dish;
 	}
 
-	@DeleteMapping("/dishes/{id}")
-	public ResponseEntity<String> deleteDish(@PathVariable("id") Long id) {
+	/*
+	 * @DeleteMapping("/dishes/{id}") public ResponseEntity<String>
+	 * deleteDish(@PathVariable("id") Long id) {
+	 * System.out.println("Delete Dish with ID = " + id + "...");
+	 * 
+	 * repository.deleteById(id);
+	 * 
+	 * return new ResponseEntity<>("Dish has been deleted!", HttpStatus.OK); }
+	 */
+	@DeleteMapping(value = "/dishes/{id}")
+	public ResponseEntity<?> deleteDish(@PathVariable("id") Long id) {
 		System.out.println("Delete Dish with ID = " + id + "...");
 
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			return new ResponseEntity<Authenticator.Failure>(HttpStatus.GONE);
+		}
 
-		return new ResponseEntity<>("Dish has been deleted!", HttpStatus.OK);
+		return new ResponseEntity<Authenticator.Success>(HttpStatus.NO_CONTENT);
 	}
 
 	@DeleteMapping("/dishes/delete")
-	public ResponseEntity<String> deleteAllDishes() {
+	public ResponseEntity<?> deleteAllDishes() {
 		System.out.println("Delete All Dishes...");
-
-		repository.deleteAll();
-
-		return new ResponseEntity<>("All Dishes have been deleted!", HttpStatus.OK);
+		try {
+			repository.deleteAll();
+		} catch (EmptyResultDataAccessException e) {
+			return new ResponseEntity<Authenticator.Failure>(HttpStatus.GONE);
+		}
+		return new ResponseEntity<Authenticator.Success>(HttpStatus.NO_CONTENT);
 	}
 
 	@GetMapping(value = "dishes/name/{name}")
