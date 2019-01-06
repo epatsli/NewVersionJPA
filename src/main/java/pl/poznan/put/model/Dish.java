@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import exception.IncorrectParameterException;
@@ -15,6 +16,7 @@ public class Dish {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@ManyToOne
 	@Column(name = "id")
 	private Long id;
 

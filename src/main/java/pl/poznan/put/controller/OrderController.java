@@ -26,7 +26,7 @@ public class OrderController {
 
 	@Autowired
 	private OrderRepository repository;
-	
+
 	@GetMapping("/orders")
 	public List<Order> getAllOrders() {
 
@@ -39,30 +39,39 @@ public class OrderController {
 	@PostMapping(value = "/orders")
 	public Order postDish(@RequestBody Order order) {
 
-		Order _order = repository.save(new Order().builder().withStatus(order.getStatus()).build());
+		// CustomerData cd = repositoryCd.save(new
+		// CustomerData().builder().withFirstName(cd.getFirstName())
+		// .withLastName(cd.getLastName()).withPhone(cd.getPhone()).withCity(cd.getCity())
+		// .withStreet(cd.getStreet()).withZipCode(cd.getZipCode()).build());
+		Order _order = repository.save(new Order().builder().withFirstName(order.getFirstName())
+				 .withLastName(order.getLastName()).withPhone(order.getPhone()).withCity(order.getCity())
+				 .withStreet(order.getStreet()).withHouseNumber(order.getHouseNumber()).withZipCode(order.getZipCode()).withPrice(order.getPrice())
+				.withStatus(order.getStatus()).withPrice(order.getPrice()).withDishIds(order.getDishIds()).build());
 		return _order;
-	/*	
-		CustomerData cd = repositoryCd.save(new CustomerData().builder().withFirstName(cd.getFirstName())
-				.withLastName(cd.getLastName()).withPhone(cd.getPhone()).withCity(cd.getCity())
-				.withStreet(cd.getStreet()).withZipCode(cd.getZipCode()).build());
 
-		Order _order = repository
-				.save(new Order().builder().withDishIds(order.getDishIds()).withAmountDish(order.getAmountDish())
-						.withPrice(order.getPrice()).withStatus(order.getStatus()).withCustomerData(cd).build());
-		return _order;
-		*/
 	}
 
-	/*
-	 * @PutMapping("/orders/{id}") public ResponseEntity<Order>
-	 * updateOrder(@PathVariable("id") long id, @RequestBody Order order) {
-	 * 
-	 * Optional<Order> orderData = repository.findById(id);
-	 * 
-	 * if (orderData.isPresent()) { Order _order = orderData.get();
-	 * _order.setPrice(order.getPrice()); _order.setStatus(order.getStatus());
-	 * //_order.setCustomerData(order.getCustomerData()); return new
-	 * ResponseEntity<>(repository.save(_order), HttpStatus.OK); } else { return new
-	 * ResponseEntity<>(HttpStatus.NOT_FOUND); } }
-	 */
+	@PutMapping("/orders/{id}")
+	public ResponseEntity<Order> updateOrder(@PathVariable("id") long id, @RequestBody Order order) {
+
+		Optional<Order> orderData = repository.findById(id);
+
+		if (orderData.isPresent()) {
+			Order _order = orderData.get();
+			_order.setPrice(order.getPrice());
+			_order.setStatus(order.getStatus());
+			_order.setFirstName(order.getFirstName());
+			_order.setLastName(order.getLastName());
+			_order.setPhone(order.getPhone());
+			_order.setStreet(order.getStreet());
+			_order.setHouseNumber(order.getHouseNumber());
+			_order.setCity(order.getCity());
+			_order.setZipCode(order.getZipCode());
+			//_order.setCustomerData(order.getCustomerData());
+			return new ResponseEntity<>(repository.save(_order), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
 }
