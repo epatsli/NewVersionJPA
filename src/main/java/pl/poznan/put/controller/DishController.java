@@ -34,6 +34,15 @@ public class DishController {
 		System.out.println("Get all Dishes...");
 
 		List<Dish> dishes = new ArrayList<>();
+		repository.findAll().stream().filter(dish->dish.isAvailable()==true).forEach(dishes::add);
+
+		return dishes;
+	}
+	
+	@GetMapping("/dishes/admin")
+	public List<Dish> getAllDishesForAdmin() {
+
+		List<Dish> dishes = new ArrayList<>();
 		repository.findAll().forEach(dishes::add);
 
 		return dishes;
@@ -47,15 +56,6 @@ public class DishController {
 		return _dish;
 	}
 
-	/*
-	 * @DeleteMapping("/dishes/{id}") public ResponseEntity<String>
-	 * deleteDish(@PathVariable("id") Long id) {
-	 * System.out.println("Delete Dish with ID = " + id + "...");
-	 * 
-	 * repository.deleteById(id);
-	 * 
-	 * return new ResponseEntity<>("Dish has been deleted!", HttpStatus.OK); }
-	 */
 	@DeleteMapping(value = "/dishes/{id}")
 	public ResponseEntity<?> deleteDish(@PathVariable("id") Long id) {
 		System.out.println("Delete Dish with ID = " + id + "...");
@@ -90,21 +90,21 @@ public class DishController {
 	@GetMapping(value = "dishes/pizzas")
 	public List<Dish> getPizzas() {
 
-		return repository.findAll().stream().filter(dish -> dish.getType().equals("pizza"))
+		return repository.findAll().stream().filter(dish -> (dish.getType().equals("pizza")||dish.getType().equals("Pizza") ) && dish.isAvailable()==true)
 				.collect(Collectors.toList());
 	}
 
 	@GetMapping(value = "dishes/pastas")
 	public List<Dish> getPastas() {
 
-		return repository.findAll().stream().filter(dish -> dish.getType().equals("spagetti"))
+		return repository.findAll().stream().filter(dish -> (dish.getType().equals("spagetti")||dish.getType().equals("Spagetti") ) && dish.isAvailable()==true)
 				.collect(Collectors.toList());
 	}
 
 	@GetMapping(value = "dishes/drinks")
 	public List<Dish> getDrinks() {
 
-		return repository.findAll().stream().filter(dish -> dish.getType().equals("drink"))
+		return repository.findAll().stream().filter(dish -> (dish.getType().equals("drink")||dish.getType().equals("Drink") ) && dish.isAvailable()==true)
 				.collect(Collectors.toList());
 	}
 

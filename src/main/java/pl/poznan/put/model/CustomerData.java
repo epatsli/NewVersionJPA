@@ -110,7 +110,6 @@ public class CustomerData {
 	public static class CustomerDataBuilder {
 		private String firstName;
 		private String lastName;
-		private String email;
 		private String phone;
 		private String street;
 		private String houseNumber;
@@ -127,11 +126,6 @@ public class CustomerData {
 
 		public CustomerDataBuilder withLastName(String lastName) {
 			this.lastName = lastName;
-			return this;
-		}
-
-		public CustomerDataBuilder withEmail(String email) {
-			this.email = email;
 			return this;
 		}
 
@@ -155,13 +149,13 @@ public class CustomerData {
 			return this;
 		}
 
-		public CustomerDataBuilder withPostCode(String zipCode) {
+		public CustomerDataBuilder withZipCode(String zipCode) {
 			this.zipCode = zipCode;
 			return this;
 		}
 
 		private void checkBeforeBuild() {
-			if (firstName == null || lastName == null || email == null || houseNumber == null || city == null
+			if (firstName == null || lastName == null || houseNumber == null || city == null
 					|| zipCode == null) {
 				throw new IncorrectParameterException("This customer data can't be created.");
 			}
