@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,12 +26,15 @@ public class Order {
 	private Long id;
 	
 	@OneToMany(mappedBy = "id")
+	@ElementCollection
 	@Column(name = "dishIds")
 	private List<Dish> dishIds = new ArrayList<>();
-	/*
+	
+	//@OneToMany(mappedBy = "count")
 	@Column(name = "amountDish")
+	@ElementCollection//(targetClass=Integer.class)
 	private List<Integer> amountDish = new ArrayList<>();
-	*/
+	
 	@Column(name = "price")
 	private double price;
 	
@@ -65,7 +69,7 @@ public class Order {
 	
 	public Order(OrderBuilder builder) {
 		this.dishIds=builder.dishIds;
-	//	this.amountDish=builder.amountDish;
+		this.amountDish=builder.amountDish;
 		this.price=builder.price;
 		this.status=builder.status;
 		//this.customerData=builder.customerData;
@@ -95,7 +99,7 @@ public class Order {
 		this.dishIds = dishIds;
 	}
 	
-/*
+
 	public List<Integer> getAmountDish() {
 		return amountDish;
 	}
@@ -103,7 +107,6 @@ public class Order {
 	public void setAmountDish(List<Integer> amountDish) {
 		this.amountDish = amountDish;
 	}
-*/
 	
 	public double getPrice() {
 		return price;

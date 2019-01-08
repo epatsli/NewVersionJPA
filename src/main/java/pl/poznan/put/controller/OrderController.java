@@ -44,9 +44,10 @@ public class OrderController {
 		// .withLastName(cd.getLastName()).withPhone(cd.getPhone()).withCity(cd.getCity())
 		// .withStreet(cd.getStreet()).withZipCode(cd.getZipCode()).build());
 		Order _order = repository.save(new Order().builder().withFirstName(order.getFirstName())
-				 .withLastName(order.getLastName()).withPhone(order.getPhone()).withCity(order.getCity())
-				 .withStreet(order.getStreet()).withHouseNumber(order.getHouseNumber()).withZipCode(order.getZipCode()).withPrice(order.getPrice())
-				.withStatus(order.getStatus()).withPrice(order.getPrice()).withDishIds(order.getDishIds()).build());
+				.withLastName(order.getLastName()).withPhone(order.getPhone()).withCity(order.getCity())
+				.withStreet(order.getStreet()).withHouseNumber(order.getHouseNumber()).withZipCode(order.getZipCode())
+				.withPrice(order.getPrice()).withStatus(order.getStatus()).withPrice(order.getPrice())
+				.withDishIds(order.getDishIds()).withAmountDish(order.getAmountDish()).build());
 		return _order;
 
 	}
@@ -67,7 +68,7 @@ public class OrderController {
 			_order.setHouseNumber(order.getHouseNumber());
 			_order.setCity(order.getCity());
 			_order.setZipCode(order.getZipCode());
-			//_order.setCustomerData(order.getCustomerData());
+			// _order.setCustomerData(order.getCustomerData());
 			return new ResponseEntity<>(repository.save(_order), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
